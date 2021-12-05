@@ -1,0 +1,57 @@
+<div class="main">
+    <h2>My phone book!</h2>
+    <div class="searchBox">
+        <input type="text" name="task" placeholder="search text goes here" [(ngModel)]="searchSign">
+        <input type="button" value="add phone" (click)="add()" class="add">
+        <span *ngIf = "searchSign !==''" (click)="searchSign = ''">&times;</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th (click)="setColumnAndSort('firstName')">
+                    First name 
+                    <span *ngIf = "(sortValue === 'desc') && (column === 'firstName')">&#9650;</span>
+                    <span *ngIf = "(sortValue === 'asc') && (column === 'firstName')">&#9660;</span>
+                </th>
+                <th (click)="setColumnAndSort('lastName')">
+                    Last name 
+                    <span *ngIf = "(sortValue === 'desc') && (column === 'lastName')">&#9650;</span>
+                    <span *ngIf = "(sortValue === 'asc') && (column === 'lastName')">&#9660;</span>
+                </th>
+                <th (click)="setColumnAndSort('number')">
+                    Number 
+                    <span *ngIf = "(sortValue === 'desc') && (column === 'number')">&#9650;</span>
+                    <span *ngIf = "(sortValue === 'asc') && (column === 'number')">&#9660;</span>
+                </th>
+                <th>Edit</th>
+                <th>DELETE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let contact of phonebook | search: searchSign | sort: column : sortValue; let i = index">
+                <td>{{contact.firstName}}</td>
+                <td>{{contact.lastName}}</td>
+                <td>{{contact.number}}</td>
+                <td >
+                    <button type="button" class="edit" (click)="edit(i)">Edit</button>
+                </td>
+                <td >
+                    <button class="delete" (click)="delete(i)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-block" [hidden]="!isEdit && !isAdd">
+    <div class="block">
+        <h3>Add phone
+            <span (click)="isEdit = false; isAdd = false">&times;</span>
+        </h3>
+        <input type="text" placeholder="first name goes here" [(ngModel)] = "editConact.firstName">
+        <input type="text" placeholder="second name goes here" [(ngModel)] = "editConact.lastName">
+        <input type="text" placeholder="number phone goes here" [(ngModel)] = "editConact.number">
+        <div>
+            <input type="button" value="Save" class="save" (click)="save()">
+        </div>
+    </div>
+</div>
